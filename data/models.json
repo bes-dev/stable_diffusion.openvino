@@ -1,0 +1,26 @@
+{
+    "text_encoder.xml": {
+        "url": "https://drive.google.com/file/d/1VXPpeieEkFbSkxbmga32DebTsf8E8NN4/view?usp=sharing",
+        "md5": "d5c6dd1e3ea5b8412b4434863877dfc9"
+    },
+    "text_encoder.bin": {
+        "url": "https://drive.google.com/file/d/1r09rTco5FtIP0IPzJTompAN8YAu2doGG/view?usp=sharing",
+        "md5": "ba70816e82b49b33ca292d46a787975f"
+    },
+    "unet.xml": {
+        "url": "https://drive.google.com/file/d/1md8Eur0AUWyEciWO-NCQ5gqpsHC7p_gD/view?usp=sharing",
+        "md5": "2d9e95da71447a81e07559de8b6df6f3"
+    },
+    "unet.bin": {
+        "url": "https://drive.google.com/file/d/1aCEXRLPK7vjABaD4ZC-SGtpT5kgyTcMo/view?usp=sharing",
+        "md5": "b0ffbc118ed32532172ad60bb1cc2a71"
+    },
+    "vae.xml": {
+        "url": "https://drive.google.com/file/d/1MblgqTMooC6N5jq5s_69k02G4evRlST1/view?usp=sharing",
+        "md5": "281704d317c33b06e96bb54b2d546efe"
+    },
+    "vae.bin": {
+        "url": "https://drive.google.com/file/d/1g9cFqb0qcr4nEBrLk_mlWBl5Lu_ggIfA/view?usp=sharing",
+        "md5": "15c7db7f79059553b7d8381815347c03"
+    }
+}
