@@ -11,22 +11,14 @@ from diffusers import LMSDiscreteScheduler
 # utils
 from tqdm import tqdm
 import cv2
-import gdown
-import json
-
-
-def gdrive_file(name, url, md5):
-    print(f"load file: {name}...")
-    ckpt_path = os.path.join("data", name)
-    gdown.cached_download(url, ckpt_path, md5=md5)
-    return ckpt_path
+from huggingface_hub import hf_hub_download
 
 
 class StableDiffusion:
     def __init__(
             self,
-            models_cfg,
             scheduler,
+            model="bes-dev/stable-diffusion-v1-4-openvino",
             tokenizer="openai/clip-vit-large-patch14",
             device="CPU"
     ):
@@ -36,21 +28,21 @@ class StableDiffusion:
         self.core = Core()
         # text features
         self._text_encoder = self.core.read_model(
-            gdrive_file("text_encoder.xml", models_cfg["text_encoder.xml"]["url"], models_cfg["text_encoder.xml"]["md5"]),
-            gdrive_file("text_encoder.bin", models_cfg["text_encoder.bin"]["url"], models_cfg["text_encoder.bin"]["md5"])
+            hf_hub_download(repo_id=model, filename="text_encoder.xml"),
+            hf_hub_download(repo_id=model, filename="text_encoder.bin")
         )
         self.text_encoder = self.core.compile_model(self._text_encoder, device)
         # diffusion
         self._unet = self.core.read_model(
-            gdrive_file("unet.xml", models_cfg["unet.xml"]["url"], models_cfg["unet.xml"]["md5"]),
-            gdrive_file("unet.bin", models_cfg["unet.bin"]["url"], models_cfg["unet.bin"]["md5"])
+            hf_hub_download(repo_id=model, filename="unet.xml"),
+            hf_hub_download(repo_id=model, filename="unet.bin")
         )
         self.unet = self.core.compile_model(self._unet, device)
         self.latent_shape = tuple(self._unet.inputs[0].shape)[1:]
         # decoder
         self._vae = self.core.read_model(
-            gdrive_file("vae.xml", models_cfg["vae.xml"]["url"], models_cfg["vae.xml"]["md5"]),
-            gdrive_file("vae.bin", models_cfg["vae.bin"]["url"], models_cfg["vae.bin"]["md5"])
+            hf_hub_download(repo_id=model, filename="vae.xml"),
+            hf_hub_download(repo_id=model, filename="vae.bin")
         )
         self.vae = self.core.compile_model(self._vae, device)
 
@@ -147,7 +139,7 @@ def main(args):
         tensor_format="np"
     )
     stable_diffusion = StableDiffusion(
-        models_cfg = json.load(open(args.models_cfg)),
+        model = args.model,
         scheduler = scheduler,
         tokenizer = args.tokenizer
     )
@@ -163,7 +155,7 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     # pipeline configure
-    parser.add_argument("--models-cfg", type=str, default="data/models.json", help="path to models config")
+    parser.add_argument("--model", type=str, default="bes-dev/stable-diffusion-v1-4-openvino", help="model name")
     # scheduler params
     parser.add_argument("--beta-start", type=float, default=0.00085, help="LMSDiscreteScheduler::beta_start")
     parser.add_argument("--beta-end", type=float, default=0.012, help="LMSDiscreteScheduler::beta_end")
