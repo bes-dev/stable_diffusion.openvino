@@ -51,7 +51,7 @@ python stable_diffusion.py --prompt "Street-art painting of Emilia Clarke in sty
 ## Acknowledgements
 
 * Original implementation of Stable Diffusion: https://github.com/CompVis/stable-diffusion
-* diffuisers library: https://github.com/huggingface/diffusers
+* diffusers library: https://github.com/huggingface/diffusers
 
 ## Disclaimer
 
