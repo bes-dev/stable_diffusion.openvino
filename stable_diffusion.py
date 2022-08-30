@@ -132,6 +132,8 @@ class StableDiffusion:
 
 
 def main(args):
+    if args.seed is not None:
+        np.random.seed(args.seed)
     scheduler = LMSDiscreteScheduler(
         beta_start=args.beta_start,
         beta_end=args.beta_end,
@@ -156,6 +158,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     # pipeline configure
     parser.add_argument("--model", type=str, default="bes-dev/stable-diffusion-v1-4-openvino", help="model name")
+    # randomizer params
+    parser.add_argument("--seed", type=int, default=None, help="random seed")
     # scheduler params
     parser.add_argument("--beta-start", type=float, default=0.00085, help="LMSDiscreteScheduler::beta_start")
     parser.add_argument("--beta-end", type=float, default=0.012, help="LMSDiscreteScheduler::beta_end")
