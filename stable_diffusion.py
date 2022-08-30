@@ -159,7 +159,7 @@ if __name__ == "__main__":
     # pipeline configure
     parser.add_argument("--model", type=str, default="bes-dev/stable-diffusion-v1-4-openvino", help="model name")
     # randomizer params
-    parser.add_argument("--seed", type=int, default=None, help="random seed")
+    parser.add_argument("--seed", type=int, default=None, help="random seed for generating consistent images per prompt")
     # scheduler params
     parser.add_argument("--beta-start", type=float, default=0.00085, help="LMSDiscreteScheduler::beta_start")
     parser.add_argument("--beta-end", type=float, default=0.012, help="LMSDiscreteScheduler::beta_end")
