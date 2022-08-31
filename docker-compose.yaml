@@ -1,0 +1,10 @@
+version: '3.9'
+services:
+  stable-diffusion:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      # - /tmp/cache:/root/.cache
+      - /tmp/output:/tmp/output
+      # - /tmp/models:/root/models
