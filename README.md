@@ -51,7 +51,7 @@ optional arguments:
 
 ### Example Text-To-Image
 ```bash
-python stable_diffusion_engine.py --prompt "Street-art painting of Emilia Clarke in style of Banksy, photorealism"
+python demo.py --prompt "Street-art painting of Emilia Clarke in style of Banksy, photorealism"
 ```
 
 ### Example Image-To-Image
