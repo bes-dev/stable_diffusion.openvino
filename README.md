@@ -69,7 +69,7 @@ python demo.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-i
   <img src="data/demo_web.png"/>
 </p>
 
-![Example video on YouTube](https://youtu.be/wkbrRr6PPcY)
+[Example video on YouTube](https://youtu.be/wkbrRr6PPcY)
 
 ```bash
 streamlit run demo_web.py
