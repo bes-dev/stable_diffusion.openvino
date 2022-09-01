@@ -1,7 +1,9 @@
 # -- coding: utf-8 --`
 import argparse
 import os
+import random
 import streamlit as st
+from streamlit_drawable_canvas import st_canvas
 import numpy as np
 import cv2
 from  PIL import Image, ImageEnhance
@@ -16,16 +18,31 @@ def run(engine):
     with st.form(key="request"):
         with st.sidebar:
             prompt = st.text_area(label='Enter prompt')
-            init_image = st.file_uploader("Initial image", type=['jpg','png','jpeg'])
-            mask = st.file_uploader("Mask", type=['jpg','png','jpeg'])
+
+            with st.expander("Initial image"):
+                init_image = st.file_uploader("init_image", type=['jpg','png','jpeg'])
+                stroke_width = st.slider("stroke_width", 1, 100, 50)
+                stroke_color = st.color_picker("stroke_color", "#00FF00")
+                canvas_result = st_canvas(
+                    fill_color="rgb(0, 0, 0)",
+                    stroke_width = stroke_width,
+                    stroke_color = stroke_color,
+                    background_color = "#000000",
+                    background_image = Image.open(init_image) if init_image else None,
+                    height = 512,
+                    width = 512,
+                    drawing_mode = "freedraw",
+                    key = "canvas"
+                )
 
             if init_image is not None:
                 init_image = cv2.cvtColor(np.array(Image.open(init_image)), cv2.COLOR_RGB2BGR)
 
-            if mask is not None:
-                mask = np.array(Image.open(mask))
-                if mask.ndim > 2:
-                    mask = cv2.cvtColor(mask, cv2.COLOR_RGB2GRAY)
+            if canvas_result.image_data is not None:
+                mask = cv2.cvtColor(canvas_result.image_data, cv2.COLOR_BGRA2GRAY)
+                mask[mask > 0] = 255
+            else:
+                mask = None
 
             num_inference_steps = st.select_slider(
                 label='num_inference_steps',
@@ -46,10 +63,17 @@ def run(engine):
                 value = 0.5
             )
 
+            seed = st.number_input(
+                label='seed',
+                min_value = 0,
+                max_value = 2 ** 31,
+                value = random.randint(0, 2 ** 31)
+            )
+
             generate = st.form_submit_button(label = 'Generate')
 
         if prompt:
-            # st.markdown(f'<p style="text-align: center;">{prompt}</p>', unsafe_allow_html=True)
+            np.random.seed(seed)
             image = engine(
                 prompt = prompt,
                 init_image = init_image,
