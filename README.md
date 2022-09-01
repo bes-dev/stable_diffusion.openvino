@@ -20,8 +20,8 @@ pip install -r requirements.txt
 ## Generate image from text description
 
 ```bash
-usage: stable_diffusion.py [-h] [--model MODEL] [--seed SEED] [--beta-start BETA_START] [--beta-end BETA_END] [--beta-schedule BETA_SCHEDULE] [--num-inference-steps NUM_INFERENCE_STEPS]
-                           [--guidance-scale GUIDANCE_SCALE] [--eta ETA] [--tokenizer TOKENIZER] [--prompt PROMPT] [--output OUTPUT]
+usage: demo.py [-h] [--model MODEL] [--seed SEED] [--beta-start BETA_START] [--beta-end BETA_END] [--beta-schedule BETA_SCHEDULE] [--num-inference-steps NUM_INFERENCE_STEPS]
+               [--guidance-scale GUIDANCE_SCALE] [--eta ETA] [--tokenizer TOKENIZER] [--prompt PROMPT] [--init-image INIT_IMAGE] [--strength STRENGTH] [--mask MASK] [--output OUTPUT]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -40,12 +40,37 @@ optional arguments:
   --tokenizer TOKENIZER
                         tokenizer
   --prompt PROMPT       prompt
+  --init-image INIT_IMAGE
+                        path to initial image
+  --strength STRENGTH   how strong the initial image should be noised [0.0, 1.0]
+  --mask MASK           mask of the region to inpaint on the initial image
   --output OUTPUT       output image name
-```
+  ```
 
-### Example
+## Examples
+
+### Example Text-To-Image
 ```bash
 python stable_diffusion.py --prompt "Street-art painting of Emilia Clarke in style of Banksy, photorealism"
+```
+
+### Example Image-To-Image
+```bash
+python stable_diffusion.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-image ./data/input.png --strength 0.5
+```
+
+### Example Inapinting
+```bash
+python stable_diffusion.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-image ./data/input.png --mask ./data/mask.png --strength 0.5
+```
+
+### Example web demo
+<p align="center">
+  <img src="data/demo_web.png"/>
+</p>
+
+```bash
+streamlit run demo_web.py
 ```
 
 ## Performance
