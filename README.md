@@ -56,7 +56,7 @@ python stable_diffusion_engine.py --prompt "Street-art painting of Emilia Clarke
 
 ### Example Image-To-Image
 ```bash
-python stable_diffusion_engine.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-image ./data/input.png --strength 0.5
+python demo.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-image ./data/input.png --strength 0.5
 ```
 
 ### Example Inapinting
