@@ -7,6 +7,7 @@ from stable_diffusion_engine import StableDiffusionEngine
 from diffusers import LMSDiscreteScheduler, PNDMScheduler
 # utils
 import cv2
+import numpy as np
 
 
 def main(args):
