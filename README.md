@@ -51,17 +51,17 @@ optional arguments:
 
 ### Example Text-To-Image
 ```bash
-python stable_diffusion.py --prompt "Street-art painting of Emilia Clarke in style of Banksy, photorealism"
+python stable_diffusion_engine.py --prompt "Street-art painting of Emilia Clarke in style of Banksy, photorealism"
 ```
 
 ### Example Image-To-Image
 ```bash
-python stable_diffusion.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-image ./data/input.png --strength 0.5
+python stable_diffusion_engine.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-image ./data/input.png --strength 0.5
 ```
 
 ### Example Inapinting
 ```bash
-python stable_diffusion.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-image ./data/input.png --mask ./data/mask.png --strength 0.5
+python stable_diffusion_engine.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-image ./data/input.png --mask ./data/mask.png --strength 0.5
 ```
 
 ### Example web demo
