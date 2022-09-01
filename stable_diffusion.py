@@ -42,8 +42,8 @@ class StableDiffusion:
         self.latent_shape = tuple(self._unet.inputs[0].shape)[1:]
         # decoder
         self._vae = self.core.read_model(
-            hf_hub_download(repo_id=model, filename="vae.xml"),
-            hf_hub_download(repo_id=model, filename="vae.bin")
+            hf_hub_download(repo_id=model, filename="vae_decoder.xml"),
+            hf_hub_download(repo_id=model, filename="vae_decoder.bin")
         )
         self.vae = self.core.compile_model(self._vae, device)
 
