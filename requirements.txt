@@ -9,3 +9,4 @@ scipy==1.9.0
 streamlit==1.12.0
 watchdog==2.1.9
 ftfy==6.1.1
+streamlit_drawable_canvas==0.9.1
