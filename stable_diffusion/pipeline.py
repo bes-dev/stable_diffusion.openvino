@@ -1,58 +1,37 @@
 import inspect
 import numpy as np
-# openvino
-from openvino.runtime import Core
 # tokenizer
 from transformers import CLIPTokenizer
 # utils
 from tqdm import tqdm
-from huggingface_hub import hf_hub_download
 from diffusers import LMSDiscreteScheduler, PNDMScheduler
 import cv2
+# engine
+from .engine import EngineOV, EngineONNX
 
 
-def result(var):
-    return next(iter(var.values()))
-
-
-class StableDiffusionEngine:
+class StableDiffusionPipeline:
     def __init__(
             self,
             scheduler,
             model="bes-dev/stable-diffusion-v1-4-openvino",
             tokenizer="openai/clip-vit-large-patch14",
+            engine_type=EngineOV,
             device="CPU"
     ):
         self.tokenizer = CLIPTokenizer.from_pretrained(tokenizer)
         self.scheduler = scheduler
         # models
-        self.core = Core()
         # text features
-        self._text_encoder = self.core.read_model(
-            hf_hub_download(repo_id=model, filename="text_encoder.xml"),
-            hf_hub_download(repo_id=model, filename="text_encoder.bin")
-        )
-        self.text_encoder = self.core.compile_model(self._text_encoder, device)
+        self.text_encoder = engine_type(model, "text_encoder", device)
         # diffusion
-        self._unet = self.core.read_model(
-            hf_hub_download(repo_id=model, filename="unet.xml"),
-            hf_hub_download(repo_id=model, filename="unet.bin")
-        )
-        self.unet = self.core.compile_model(self._unet, device)
-        self.latent_shape = tuple(self._unet.inputs[0].shape)[1:]
+        self.unet = engine_type(model, "unet", device)
+        self.latent_shape = tuple(self.unet.inputs()[0].shape)[1:]
         # decoder
-        self._vae_decoder = self.core.read_model(
-            hf_hub_download(repo_id=model, filename="vae_decoder.xml"),
-            hf_hub_download(repo_id=model, filename="vae_decoder.bin")
-        )
-        self.vae_decoder = self.core.compile_model(self._vae_decoder, device)
+        self.vae_decoder = engine_type(model, "vae_decoder", device)
         # encoder
-        self._vae_encoder = self.core.read_model(
-            hf_hub_download(repo_id=model, filename="vae_encoder.xml"),
-            hf_hub_download(repo_id=model, filename="vae_encoder.bin")
-        )
-        self.vae_encoder = self.core.compile_model(self._vae_encoder, device)
-        self.init_image_shape = tuple(self._vae_encoder.inputs[0].shape)[2:]
+        self.vae_encoder = engine_type(model, "vae_encoder", device)
+        self.init_image_shape = tuple(self.vae_encoder.inputs()[0].shape)[2:]
 
     def _preprocess_mask(self, mask):
         h, w = mask.shape
@@ -90,9 +69,9 @@ class StableDiffusionEngine:
         return image
 
     def _encode_image(self, init_image):
-        moments = result(self.vae_encoder.infer_new_request({
+        moments = self.vae_encoder({
             "init_image": self._preprocess_image(init_image)
-        }))
+        })
         mean, logvar = np.split(moments, 2, axis=1)
         std = np.exp(logvar * 0.5)
         latent = (mean + std * np.random.randn(*mean.shape)) * 0.18215
@@ -115,9 +94,7 @@ class StableDiffusionEngine:
             max_length=self.tokenizer.model_max_length,
             truncation=True
         ).input_ids
-        text_embeddings = result(
-            self.text_encoder.infer_new_request({"tokens": np.array([tokens])})
-        )
+        text_embeddings = self.text_encoder({"tokens": np.array([tokens])})
 
         # do classifier free guidance
         if guidance_scale > 1.0:
@@ -127,9 +104,7 @@ class StableDiffusionEngine:
                 max_length=self.tokenizer.model_max_length,
                 truncation=True
             ).input_ids
-            uncond_embeddings = result(
-                self.text_encoder.infer_new_request({"tokens": np.array([tokens_uncond])})
-            )
+            uncond_embeddings = self.text_encoder({"tokens": np.array([tokens_uncond])})
             text_embeddings = np.concatenate((uncond_embeddings, text_embeddings), axis=0)
 
         # set timesteps
@@ -180,12 +155,11 @@ class StableDiffusionEngine:
                 sigma = self.scheduler.sigmas[i]
                 latent_model_input = latent_model_input / ((sigma**2 + 1) ** 0.5)
 
-            # predict the noise residual
-            noise_pred = result(self.unet.infer_new_request({
+            noise_pred = self.unet({
                 "latent_model_input": latent_model_input,
                 "t": t,
                 "encoder_hidden_states": text_embeddings
-            }))
+            })
 
             # perform guidance
             if guidance_scale > 1.0:
@@ -202,9 +176,7 @@ class StableDiffusionEngine:
                 init_latents_proper = self.scheduler.add_noise(init_latents, noise, t)
                 latents = ((init_latents_proper * mask) + (latents * (1 - mask)))[0]
 
-        image = result(self.vae_decoder.infer_new_request({
-            "latents": np.expand_dims(latents, 0)
-        }))
+        image = self.vae_decoder({"latents": np.expand_dims(latents, 0)})
 
         # convert tensor to opencv's image format
         image = (image / 2 + 0.5).clip(0, 1)

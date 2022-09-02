@@ -9,7 +9,7 @@ import cv2
 from  PIL import Image, ImageEnhance
 import numpy as np
 # engine
-from stable_diffusion_engine import StableDiffusionEngine
+from stable_diffusion import StableDiffusionPipeline
 # scheduler
 from diffusers import PNDMScheduler
 
@@ -85,7 +85,7 @@ def run(engine):
             st.image(Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB)), width=512)
 
 @st.cache(allow_output_mutation=True)
-def load_engine(args):
+def load_pipeline(args):
     scheduler = PNDMScheduler(
         beta_start=args.beta_start,
         beta_end=args.beta_end,
@@ -93,12 +93,12 @@ def load_engine(args):
         skip_prk_steps = True,
         tensor_format="np"
     )
-    engine = StableDiffusionEngine(
+    pipeline = StableDiffusionPipeline(
         model = args.model,
         scheduler = scheduler,
         tokenizer = args.tokenizer
     )
-    return engine
+    return pipeline
 
 
 if __name__ == "__main__":
