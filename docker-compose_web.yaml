@@ -1,0 +1,8 @@
+version: '3.9'
+services:
+  stable-diffusion-web:
+    build:
+      context: .
+      dockerfile: Dockerfile_web
+    ports:
+      - "8501:8501"

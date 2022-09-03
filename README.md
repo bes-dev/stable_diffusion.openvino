@@ -75,6 +75,14 @@ python demo.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-i
 streamlit run demo_web.py
 ```
 
+or by docker compose
+
+```bash
+docker compose -f docker-compose_web.yaml up
+```
+
+then, go access to http://localhost:8501
+
 ## Performance
 
 | CPU                                                   | Time per iter | Total time |
