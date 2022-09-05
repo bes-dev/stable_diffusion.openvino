@@ -59,7 +59,7 @@ python demo.py --prompt "Street-art painting of Emilia Clarke in style of Banksy
 python demo.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-image ./data/input.png --strength 0.5
 ```
 
-### Example Inapinting
+### Example Inpainting
 ```bash
 python demo.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-image ./data/input.png --mask ./data/mask.png --strength 0.5
 ```
@@ -79,11 +79,12 @@ streamlit run demo_web.py
 
 | CPU                                                   | Time per iter | Total time |
 |-------------------------------------------------------|---------------|------------|
-| Intel(R) Core(TM) i5-8279U                            | 7.4 s/it      | 3.59 min   |
 | AMD Ryzen Threadripper 1900X                          | 5.34 s/it     | 2.58 min   |
-| Intel(R) Xeon(R) Gold 6154 CPU @ 3.00GHz              | 1 s/it        | 33 s       |
+| Intel(R) Core(TM) i7-4790K  @ 4.00GHz                 | 10.1 s/it     | 5.39 min   |
+| Intel(R) Core(TM) i5-8279U                            | 7.4 s/it      | 3.59 min   |
 | Intel(R) Core(TM) i7-1165G7 @ 2.80GHz                 | 7.4 s/it      | 3.59 min   |
 | Intel(R) Core(TM) i7-11800H @ 2.30GHz (16 threads)    | 2.9 s/it      | 1.54 min   |
+| Intel(R) Xeon(R) Gold 6154 CPU @ 3.00GHz              | 1 s/it        | 33 s       |
 
 ## Acknowledgements
 
