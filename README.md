@@ -59,7 +59,7 @@ python demo.py --prompt "Street-art painting of Emilia Clarke in style of Banksy
 python demo.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-image ./data/input.png --strength 0.5
 ```
 
-### Example Inapinting
+### Example Inpainting
 ```bash
 python demo.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-image ./data/input.png --mask ./data/mask.png --strength 0.5
 ```
