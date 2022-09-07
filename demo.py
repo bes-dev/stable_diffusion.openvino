@@ -8,7 +8,8 @@ from diffusers import LMSDiscreteScheduler, PNDMScheduler
 # utils
 import cv2
 import numpy as np
-
+import PIL.Image, PIL.PngImagePlugin
+import json
 
 def main(args):
     if args.seed is not None:
@@ -42,7 +43,25 @@ def main(args):
         guidance_scale = args.guidance_scale,
         eta = args.eta
     )
-    cv2.imwrite(args.output, image)
+
+    pil_image = PIL.Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+    info = {}
+    info['created_with'] = 'stable_diffusion.openvino'
+    for name, value in vars(args).items():
+        # Special handling for filenames to avoid leaking usernames from paths:
+        if name in ['mask', 'init_image']:
+            value = None if value is None else os.path.basename(value)
+        if value is not None:
+            info[f"stable_diffusion_{name}"] = str(value)
+
+    pnginfo = PIL.PngImagePlugin.PngInfo()
+    for key, value in info.items():
+        if value is not None:
+            pnginfo.add_text(key, value)
+
+    pil_image.save(args.output,
+                 tiffinfo=info,
+                 pnginfo=pnginfo)
 
 
 if __name__ == "__main__":
