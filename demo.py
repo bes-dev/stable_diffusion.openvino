@@ -47,10 +47,9 @@ def main(args):
 
     pil_image = PIL.Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
     info = {}
-    info['created_with'] = 'stable_diffusion.openvino'
     for name, value in vars(args).items():
         # Special handling for filenames to avoid leaking usernames from paths:
-        if name in ['mask', 'init_image']:
+        if name in ['mask', 'init_image', 'output']:
             value = None if value is None else os.path.basename(value)
         if value is not None:
             info[f"stable_diffusion_{name}"] = str(value)
@@ -62,7 +61,7 @@ def main(args):
 
     exif_ifd0 = {
         piexif.ImageIFD.Software: "stable_diffusion.openvino",
-        piexif.ImageIFD.ImageDescription: json.dumps(info).encode("utf-8")
+        piexif.ImageIFD.ImageDescription: json.dumps(info)
     }
     exif_dict = {
         "0th": exif_ifd0,
@@ -70,7 +69,6 @@ def main(args):
     exif_bytes = piexif.dump(exif_dict)
 
     pil_image.save(args.output,
-                   tiffinfo=info,
                    pnginfo=pnginfo,
                    exif=exif_bytes)
 
