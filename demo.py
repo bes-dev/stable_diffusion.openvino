@@ -9,6 +9,7 @@ from diffusers import LMSDiscreteScheduler, PNDMScheduler
 import cv2
 import numpy as np
 import PIL.Image, PIL.PngImagePlugin
+import piexif
 import json
 
 def main(args):
@@ -59,9 +60,19 @@ def main(args):
         if value is not None:
             pnginfo.add_text(key, value)
 
+    exif_ifd0 = {
+        piexif.ImageIFD.Software: "stable_diffusion.openvino",
+        piexif.ImageIFD.ImageDescription: json.dumps(info).encode("utf-8")
+    }
+    exif_dict = {
+        "0th": exif_ifd0,
+    }
+    exif_bytes = piexif.dump(exif_dict)
+
     pil_image.save(args.output,
-                 tiffinfo=info,
-                 pnginfo=pnginfo)
+                   tiffinfo=info,
+                   pnginfo=pnginfo,
+                   exif=exif_bytes)
 
 
 if __name__ == "__main__":

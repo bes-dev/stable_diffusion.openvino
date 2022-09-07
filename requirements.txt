@@ -10,3 +10,4 @@ streamlit==1.12.0
 watchdog==2.1.9
 ftfy==6.1.1
 pillow==9.0.1
+piexif==1.1.3
