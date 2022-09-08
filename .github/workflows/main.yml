@@ -21,3 +21,10 @@ jobs:
         with:
           push: false
           tags: user/app:latest
+          outputs: type=docker,dest=/tmp/stable-diffusion-openvino.tar
+      -
+        name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: myimage
+          path: /tmp/stable-diffusion-openvino.tar
