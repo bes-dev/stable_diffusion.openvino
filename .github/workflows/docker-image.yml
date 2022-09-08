@@ -17,6 +17,14 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag stable-diffusion-openvino:$(date +%s)
     - name: Save the Docker image
-      run: docker save -O stable-diffusion-openvino.tar stable-diffusion-openvino
+      run: docker save -o  stable-diffusion-openvino | gzip > stable-diffusion-openvino.tar.gz
+    - name: Archive build artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: docker-image
+        path: |
+          *.tar
+          *.gz
+
       
  
