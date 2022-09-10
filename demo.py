@@ -8,6 +8,9 @@ from diffusers import LMSDiscreteScheduler, PNDMScheduler
 # utils
 import cv2
 import numpy as np
+from PIL import Image
+from PIL.PngImagePlugin import PngInfo
+import datetime
 
 
 def main(args):
@@ -42,7 +45,21 @@ def main(args):
         guidance_scale = args.guidance_scale,
         eta = args.eta
     )
-    cv2.imwrite(args.output, image)
+    #cv2.imwrite(args.output, image)
+    # convert from openCV2 to PIL. Notice the COLOR_BGR2RGB which means that 
+    # # the color is converted from BGR to RGB
+    color_coverted = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    pil_image=Image.fromarray(color_coverted)
+    metadata = PngInfo()
+    metadata.add_text("prompt", args.prompt)
+    metadata.add_text("timestamp", datetime.datetime.now().isoformat())
+    metadata.add_text("tool", "stable diffusion openvino 1.4")
+    metadata.add_text("dimension", "512x512")
+    metadata.add_text("seed", str(args.seed))
+    metadata.add_text("num-inference-steps", str(args.num_inference_steps))
+    metadata.add_text("strength", str(args.strength))
+    metadata.add_text("guidancescale", str(args.guidance_scale))
+    pil_image.save(args.output, "PNG", pnginfo=metadata) 
 
 
 if __name__ == "__main__":
