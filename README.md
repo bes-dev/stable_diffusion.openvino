@@ -21,7 +21,8 @@ pip install -r requirements.txt
 
 ```bash
 usage: demo.py [-h] [--model MODEL] [--seed SEED] [--beta-start BETA_START] [--beta-end BETA_END] [--beta-schedule BETA_SCHEDULE] [--num-inference-steps NUM_INFERENCE_STEPS]
-               [--guidance-scale GUIDANCE_SCALE] [--eta ETA] [--tokenizer TOKENIZER] [--prompt PROMPT] [--init-image INIT_IMAGE] [--strength STRENGTH] [--mask MASK] [--output OUTPUT]
+               [--guidance-scale GUIDANCE_SCALE] [--eta ETA] [--tokenizer TOKENIZER] [--prompt PROMPT] [--params-from PARAMS_FROM] [--init-image INIT_IMAGE] 
+               [--strength STRENGTH] [--mask MASK] [--output OUTPUT]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -40,6 +41,8 @@ optional arguments:
   --tokenizer TOKENIZER
                         tokenizer
   --prompt PROMPT       prompt
+  --params-from PARAMS_FROM
+                        Extract parameters from a previously generated image.
   --init-image INIT_IMAGE
                         path to initial image
   --strength STRENGTH   how strong the initial image should be noised [0.0, 1.0]
@@ -52,6 +55,11 @@ optional arguments:
 ### Example Text-To-Image
 ```bash
 python demo.py --prompt "Street-art painting of Emilia Clarke in style of Banksy, photorealism"
+```
+
+### Repeat a previous image generation with identical parameters but more steps
+```bash
+python demo.py --params-from output.png --output new-output.png --num-inference-steps 64
 ```
 
 ### Example Image-To-Image
