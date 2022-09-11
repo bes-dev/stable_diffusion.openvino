@@ -15,14 +15,6 @@ import piexif
 
 
 EXIF_SOFTWARE_TAG = "stable_diffusion.openvino"
-CLI_ARGUMENT_DEFAULTS = dict(
-    beta_start = 0.00085,
-    beta_end = 0.012,
-    eta = 0.0,
-    guidance_scale = 7.5,
-    num_inference_steps = 32,
-    strength = 0.5
-)
 
 def build_image_metadata(args):
     info = {}
@@ -118,13 +110,13 @@ if __name__ == "__main__":
     # randomizer params
     parser.add_argument("--seed", type=int, default=None, help="random seed for generating consistent images per prompt")
     # scheduler params
-    parser.add_argument("--beta-start", type=float, default=CLI_ARGUMENT_DEFAULTS["beta_start"], help="LMSDiscreteScheduler::beta_start")
-    parser.add_argument("--beta-end", type=float, default=CLI_ARGUMENT_DEFAULTS["beta_end"], help="LMSDiscreteScheduler::beta_end")
+    parser.add_argument("--beta-start", type=float, default=0.00085, help="LMSDiscreteScheduler::beta_start")
+    parser.add_argument("--beta-end", type=float, default=0.012, help="LMSDiscreteScheduler::beta_end")
     parser.add_argument("--beta-schedule", type=str, default="scaled_linear", help="LMSDiscreteScheduler::beta_schedule")
     # diffusion params
-    parser.add_argument("--num-inference-steps", type=int, default=CLI_ARGUMENT_DEFAULTS["num_inference_steps"], help="num inference steps")
-    parser.add_argument("--guidance-scale", type=float, default=CLI_ARGUMENT_DEFAULTS["guidance_scale"], help="guidance scale")
-    parser.add_argument("--eta", type=float, default=CLI_ARGUMENT_DEFAULTS["eta"], help="eta")
+    parser.add_argument("--num-inference-steps", type=int, default=32, help="num inference steps")
+    parser.add_argument("--guidance-scale", type=float, default=7.5, help="guidance scale")
+    parser.add_argument("--eta", type=float, default=0.0, help="eta")
     # tokenizer
     parser.add_argument("--tokenizer", type=str, default="openai/clip-vit-large-patch14", help="tokenizer")
     # prompt
@@ -133,7 +125,7 @@ if __name__ == "__main__":
     parser.add_argument("--params-from", type=str, required=False, help="Extract parameters from a previously generated image.")
     # img2img params
     parser.add_argument("--init-image", type=str, default=None, help="path to initial image")
-    parser.add_argument("--strength", type=float, default=CLI_ARGUMENT_DEFAULTS["strength"], help="how strong the initial image should be noised [0.0, 1.0]")
+    parser.add_argument("--strength", type=float, default=0.5, help="how strong the initial image should be noised [0.0, 1.0]")
     # inpainting
     parser.add_argument("--mask", type=str, default=None, help="mask of the region to inpaint on the initial image")
     # output name
@@ -157,7 +149,7 @@ if __name__ == "__main__":
 
         previous_invocation_args = parser.parse_args(previous_invocation_cmdline)
         args = parser.parse_args(namespace = previous_invocation_args)
-        
+
         print(f"Using arguments from {args.params_from} as base.")
         print("Final arguments are")
         for key in vars(args):
