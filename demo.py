@@ -11,10 +11,12 @@ import numpy as np
 import PIL.Image, PIL.PngImagePlugin
 import piexif
 import json
+import random
 
 def main(args):
-    if args.seed is not None:
-        np.random.seed(args.seed)
+    if args.seed is None:
+        args.seed = random.randint(0, 2**30)
+    np.random.seed(args.seed)
     if args.init_image is None:
         scheduler = LMSDiscreteScheduler(
             beta_start=args.beta_start,
