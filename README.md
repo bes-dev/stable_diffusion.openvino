@@ -57,7 +57,7 @@ optional arguments:
 python demo.py --prompt "Street-art painting of Emilia Clarke in style of Banksy, photorealism"
 ```
 
-### Repeat a previous image generation with identical parameters but more steps
+### Repeat a previous image generation with identical seed and parameters but more steps
 ```bash
 python demo.py --params-from output.png --output new-output.png --num-inference-steps 64
 ```
