@@ -1,6 +1,8 @@
 # -- coding: utf-8 --`
 import argparse
 import os
+import json
+import random
 # engine
 from stable_diffusion_engine import StableDiffusionEngine
 # scheduler
@@ -10,8 +12,6 @@ import cv2
 import numpy as np
 import PIL.Image, PIL.PngImagePlugin
 import piexif
-import json
-import random
 
 def main(args):
     if args.seed is None:
