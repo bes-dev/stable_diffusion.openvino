@@ -13,8 +13,16 @@ from stable_diffusion_engine import StableDiffusionEngine
 # scheduler
 from diffusers import PNDMScheduler
 
+seedValue = random.randint(0, 2 ** 31)
+
+def updateSeed():
+    if st.session_state.seed == seedValue:
+        del st.session_state.seed
 
 def run(engine):
+    if 'seed' not in st.session_state:
+        st.session_state.seed = seedValue
+
     with st.form(key="request"):
         with st.sidebar:
             prompt = st.text_area(label='Enter prompt')
@@ -65,12 +73,15 @@ def run(engine):
 
             seed = st.number_input(
                 label='seed',
+                key='seed',
                 min_value = 0,
-                max_value = 2 ** 31,
-                value = random.randint(0, 2 ** 31)
+                max_value = 2 ** 31
             )
 
-            generate = st.form_submit_button(label = 'Generate')
+            generate = st.form_submit_button(
+                label = 'Generate',
+                on_click = updateSeed
+            )
 
         if prompt:
             np.random.seed(seed)
