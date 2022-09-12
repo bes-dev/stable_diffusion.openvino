@@ -16,6 +16,11 @@ from diffusers import PNDMScheduler
 
 def run(engine):
     with st.form(key="request"):
+        if 'run_id' not in st.session_state:
+            st.session_state.run_id = 0
+        else:
+            st.session_state.run_id = st.session_state.run_id + 1
+
         with st.sidebar:
             prompt = st.text_area(label='Enter prompt')
 
@@ -73,6 +78,11 @@ def run(engine):
             generate = st.form_submit_button(label = 'Generate')
 
         if prompt:
+            run_id = st.session_state.run_id
+
+            def should_halt():
+                return False if 'run_id' not in st.session_state else run_id == st.session_state.run_id
+
             np.random.seed(seed)
             image = engine(
                 prompt = prompt,
@@ -80,7 +90,8 @@ def run(engine):
                 mask = mask,
                 strength = strength,
                 num_inference_steps = num_inference_steps,
-                guidance_scale = guidance_scale
+                guidance_scale = guidance_scale,
+                should_halt = should_halt
             )
             st.image(Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB)), width=512)
 
