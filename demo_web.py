@@ -13,19 +13,26 @@ from stable_diffusion_engine import StableDiffusionEngine
 # scheduler
 from diffusers import PNDMScheduler
 
-seed_value = random.randint(0, 2 ** 31)
-
-def update_seed():
-    if st.session_state.seed == seed_value:
-        del st.session_state.seed
+def clicked_generate():
+    st.session_state.clicked_generate = True
 
 def run(engine):
+    # init session_state if needed
+    if 'random_seed' not in st.session_state:
+        st.session_state.random_seed = random.randint(0, 2 ** 31)
     if 'seed' not in st.session_state:
-        st.session_state.seed = seed_value
+        st.session_state.seed = st.session_state.random_seed
+    if 'clicked_generate' not in st.session_state:
+        st.session_state.clicked_generate = False
 
     with st.form(key="request"):
         with st.sidebar:
             prompt = st.text_area(label='Enter prompt')
+
+            # if we are generating and the seed is random, generate a new random seed
+            if prompt and st.session_state.clicked_generate and st.session_state.seed == st.session_state.random_seed:
+                st.session_state.random_seed = random.randint(0, 2 ** 31)
+                st.session_state.seed = st.session_state.random_seed
 
             with st.expander("Initial image"):
                 init_image = st.file_uploader("init_image", type=['jpg','png','jpeg'])
@@ -80,10 +87,11 @@ def run(engine):
 
             generate = st.form_submit_button(
                 label = 'Generate',
-                on_click = update_seed
+                on_click = clicked_generate
             )
 
-        if prompt:
+        if prompt and st.session_state.clicked_generate:
+            st.session_state.clicked_generate = False
             np.random.seed(seed)
             image = engine(
                 prompt = prompt,
