@@ -70,9 +70,18 @@ def run(engine):
                 value = random.randint(0, 2 ** 31)
             )
 
+            show_progress = st.checkbox(
+                label='Show Progress'
+            )
+
             generate = st.form_submit_button(label = 'Generate')
 
         if prompt:
+            image_container = st if show_progress is False else st.empty()
+
+            def update_image(image, i = None):
+                image_container.image(image, width=512, caption=None if i is None else f'{i + 1} / {num_inference_steps}')
+
             np.random.seed(seed)
             image = engine(
                 prompt = prompt,
@@ -80,9 +89,10 @@ def run(engine):
                 mask = mask,
                 strength = strength,
                 num_inference_steps = num_inference_steps,
-                guidance_scale = guidance_scale
+                guidance_scale = guidance_scale,
+                update_image = None if show_progress is False else update_image
             )
-            st.image(Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB)), width=512)
+            update_image(Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB)))
 
 @st.cache(allow_output_mutation=True)
 def load_engine(args):
