@@ -80,6 +80,7 @@ def run(engine):
             image_container = st if show_progress is False else st.empty()
 
             def update_image(image, i = None):
+                image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
                 image_container.image(image, width=512, caption=None if i is None else f'{i + 1} / {num_inference_steps}')
 
             np.random.seed(seed)
@@ -92,7 +93,7 @@ def run(engine):
                 guidance_scale = guidance_scale,
                 update_image = None if show_progress is False else update_image
             )
-            update_image(Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB)))
+            update_image(image)
 
 @st.cache(allow_output_mutation=True)
 def load_engine(args):
