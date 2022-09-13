@@ -15,6 +15,10 @@ from diffusers import PNDMScheduler
 
 
 def run(engine):
+    def clear_output():
+        if os.path.isfile('output.png'):
+            os.remove('output.png')
+
     # init session_state if needed
     if 'random_seed' not in st.session_state:
         st.session_state.random_seed = random.randint(0, 2 ** 31)
@@ -22,6 +26,9 @@ def run(engine):
         st.session_state.seed = st.session_state.random_seed
     if 'clicked_generate' not in st.session_state:
         st.session_state.clicked_generate = False
+    if 'cleared_output' not in st.session_state:
+        clear_output()
+        st.session_state.cleared_output = True
 
     with st.form(key="request"):
         with st.sidebar:
@@ -91,8 +98,17 @@ def run(engine):
                 on_click = clicked_generate
             )
 
+        image_container = st.empty()
+
+        def update_image(image, i = None):
+            cv2.imwrite('output.png', image)
+            image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+            image_container.image(image, width=512, caption=None if i is None else f'{i + 1} / {num_inference_steps}')
+
         if prompt and st.session_state.clicked_generate:
             st.session_state.clicked_generate = False
+
+            clear_output()
             np.random.seed(seed)
             image = engine(
                 prompt = prompt,
@@ -102,7 +118,9 @@ def run(engine):
                 num_inference_steps = num_inference_steps,
                 guidance_scale = guidance_scale
             )
-            st.image(Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB)), width=512)
+            update_image(image)
+        elif os.path.isfile('output.png'):
+            update_image(cv2.imread('output.png'))
 
 @st.cache(allow_output_mutation=True)
 def load_engine(args):
