@@ -13,8 +13,6 @@ from stable_diffusion_engine import StableDiffusionEngine
 # scheduler
 from diffusers import PNDMScheduler
 
-def clicked_generate():
-    st.session_state.clicked_generate = True
 
 def run(engine):
     # init session_state if needed
@@ -84,6 +82,9 @@ def run(engine):
                 min_value = 0,
                 max_value = 2 ** 31
             )
+
+            def clicked_generate():
+                st.session_state.clicked_generate = True
 
             generate = st.form_submit_button(
                 label = 'Generate',
