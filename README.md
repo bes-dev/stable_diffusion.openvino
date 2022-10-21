@@ -1,22 +1,13 @@
-# stable_diffusion.openvino
+# Stable Diffusion Example 
 
-Implementation of Text-To-Image generation using Stable Diffusion on Intel CPU.
+Implementation of Text-To-Image generation using Stable Diffusion on CPU.
 <p align="center">
-  <img src="data/title.png"/>
+  <img src="data/example.png"/>
 </p>
 
-## News
+## Introduction
 
-When we started this project, it was just a tiny proof of concept that you can work with state-of-the-art image generators even without access to expensive hardware.
-But, due we get a lot of feedback from you, we decided to make this project something more than a tiny script.
-Currently, we work on the new version of our project, so we can respond to your issues and pool requests with delay.
-
-
-## Requirements
-
-* Linux, Windows, MacOS
-* Python 3.8.+
-* CPU compatible with OpenVINO.
+Stable Diffusion implementation example.
 
 ## Install requirements
 
@@ -58,43 +49,20 @@ optional arguments:
 
 ### Example Text-To-Image
 ```bash
-python demo.py --prompt "Street-art painting of Emilia Clarke in style of Banksy, photorealism"
+python demo.py --prompt "blueberry donut on the Moon, 3D realistic"
 ```
 
 ### Example Image-To-Image
 ```bash
-python demo.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-image ./data/input.png --strength 0.5
+python demo.py --prompt "blueberry donut on the Moon in red color, 3D realistic" --init-image ./data/example.png --strength 0.5
 ```
 
-### Example Inpainting
-```bash
-python demo.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-image ./data/input.png --mask ./data/mask.png --strength 0.5
-```
-
-### Example web demo
-<p align="center">
-  <img src="data/demo_web.png"/>
-</p>
-
-[Example video on YouTube](https://youtu.be/wkbrRr6PPcY)
-
-```bash
-streamlit run demo_web.py
-```
-
-## Performance
-
-| CPU                                                   | Time per iter | Total time |
-|-------------------------------------------------------|---------------|------------|
-| AMD Ryzen Threadripper 1900X                          | 5.34 s/it     | 2.58 min   |
-| Intel(R) Core(TM) i7-4790K  @ 4.00GHz                 | 10.1 s/it     | 5.39 min   |
-| Intel(R) Core(TM) i5-8279U                            | 7.4 s/it      | 3.59 min   |
-| Intel(R) Core(TM) i7-1165G7 @ 2.80GHz                 | 7.4 s/it      | 3.59 min   |
-| Intel(R) Core(TM) i7-11800H @ 2.30GHz (16 threads)    | 2.9 s/it      | 1.54 min   |
-| Intel(R) Xeon(R) Gold 6154 CPU @ 3.00GHz              | 1 s/it        | 33 s       |
+### Starter notebook
+`starter_notebook.ipynb`: this is a starter notebook example.
 
 ## Acknowledgements
 
+* This repository is a fork of: https://github.com/bes-dev/stable_diffusion.openvino
 * Original implementation of Stable Diffusion: https://github.com/CompVis/stable-diffusion
 * diffusers library: https://github.com/huggingface/diffusers
 
