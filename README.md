@@ -82,6 +82,15 @@ python demo.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-i
 streamlit run demo_web.py
 ```
 
+### Example CLI demo
+This simple wrapper allows to avoid initializing the Engine for every command-line prompt.
+For those of us who are so stubborn we want to just use CPU and CLI. ;)
+```bash
+$ python demo_cli.py
+# the CLI has its own way of setting the params,
+# and you can still use the same arguments to initialize the CLI session
+```
+
 ## Performance
 
 | CPU                                                   | Time per iter | Total time |
