@@ -33,10 +33,7 @@ def askForAction():
     print("input: ", end='')
     return input()
 
-def askForArgument(action):
-    print()
-
-def buildNewOutputPathWithTime(path):
+def buildNewOutputPathWithTimestamp(path):
     timeSt = time.time()
     lastDotInd = path.rfind('.')
     if(lastDotInd < 0):
@@ -61,7 +58,7 @@ def performGeneration(engine, settings):
         guidance_scale = settings.guidance_scale,
         eta = settings.eta
     )
-    cv2.imwrite(buildNewOutputPathWithTime(settings.output), image)
+    cv2.imwrite(buildNewOutputPathWithTimestamp(settings.output), image)
     print("Finished generation at ", datetime.now().strftime("%Y/%m/%d %H:%M:%S"), end='\n\n\n')
 
 
