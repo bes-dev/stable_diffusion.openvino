@@ -95,6 +95,7 @@ $ python demo_cli.py
 
 | CPU                                                   | Time per iter | Total time |
 |-------------------------------------------------------|---------------|------------|
+| AMD Ryzen 7 4800H                                     | 4.8 s/it      | 2.58 min   |
 | AMD Ryzen Threadripper 1900X                          | 5.34 s/it     | 2.58 min   |
 | Intel(R) Core(TM) i7-4790K  @ 4.00GHz                 | 10.1 s/it     | 5.39 min   |
 | Intel(R) Core(TM) i5-8279U                            | 7.4 s/it      | 3.59 min   |
