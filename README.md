@@ -20,7 +20,13 @@ Currently, we work on the new version of our project, so we can respond to your 
 
 ## Install requirements
 
+* Set up and update PIP to the highest version
+* Install OpenVINO™ Development Tools 2022.1 release with PyPI
+* Download requirements
+
 ```bash
+python -m pip install --upgrade pip
+pip install openvino-dev[onnx,pytorch]==2022.1.0
 pip install -r requirements.txt
 ```
 
