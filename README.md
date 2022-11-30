@@ -89,6 +89,43 @@ pip install streamlit_drawable_canvas
 streamlit run demo_web.py
 ```
 
+## Using with Docker
+
+Using Docker, it's not needed to install anything except Docker itself.
+
+### Building containers
+
+* Build docker for command-line version (image name: **sd**)
+* Build docker for web demo version (image name: **sd-web**)
+
+```bash
+docker build . -t sd
+docker build . -f Dockerfile-webdemo -t sd-web
+```
+
+### Using CLI-based container
+Example "text-to-image", writing result in current directory:
+```bash
+docker run -v ${PWD}:/tmp sd --prompt "Emilia Clake drinking a coffee" --output /tmp/result.png
+```
+Windows users:
+```
+sd.bat "Emilia Clake drinking a coffee"
+```
+The file `result.png` will be generated in the current directory
+
+### Using web-based container
+Run this:
+
+```bash
+docker run -p 9090:8501 sd-web
+```
+Windows users:
+```
+sd-web.bat
+```
+Then launch this in your browser: http://localhost:9090
+
 ## Performance
 
 | CPU                                                   | Time per iter | Total time |

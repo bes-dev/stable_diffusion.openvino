@@ -129,3 +129,5 @@ dmypy.json
 .pyre/
 
 tmp/
+.idea
+result.png
