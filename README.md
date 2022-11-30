@@ -85,6 +85,7 @@ python demo.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-i
 [Example video on YouTube](https://youtu.be/wkbrRr6PPcY)
 
 ```bash
+pip install streamlit_drawable_canvas
 streamlit run demo_web.py
 ```
 
