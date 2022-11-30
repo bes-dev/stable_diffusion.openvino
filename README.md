@@ -78,16 +78,17 @@ python demo.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-i
 ```
 
 ### Example web demo
-<p align="center">
-  <img src="data/demo_web.png"/>
-</p>
-
-[Example video on YouTube](https://youtu.be/wkbrRr6PPcY)
 
 ```bash
 pip install streamlit_drawable_canvas
 streamlit run demo_web.py
 ```
+
+<p align="center">
+  <img src="data/demo_web.png"/>
+</p>
+
+[Example video on YouTube](https://youtu.be/wkbrRr6PPcY)
 
 ## Using with Docker
 
