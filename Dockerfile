@@ -8,7 +8,7 @@ RUN apt-get update && \
 
 COPY requirements.txt /src/
 
-RUN pip3 install -r requirements.txt
+RUN pip3 install pip --upgrade && pip3 install -r requirements.txt
 
 COPY stable_diffusion_engine.py demo.py demo_web.py /src/
 COPY data/ /src/data/
