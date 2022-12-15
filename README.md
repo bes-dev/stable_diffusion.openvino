@@ -53,6 +53,14 @@ optional arguments:
   --mask MASK           mask of the region to inpaint on the initial image
   --output OUTPUT       output image name
   ```
+  
+## Docker Build & Run
+
+```bash
+docker-compose build
+docker-compose run stable diffusion -h
+docker-compose run stable-diffusion --prompt "whatever..." --output /tmp/output/space.jpeg
+```
 
 ## Examples
 
