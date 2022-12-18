@@ -89,8 +89,10 @@ streamlit run demo_web.py
 | AMD Ryzen Threadripper 1900X                          | 5.34 s/it     | 2.58 min   |
 | Intel(R) Core(TM) i7-4790K  @ 4.00GHz                 | 10.1 s/it     | 5.39 min   |
 | Intel(R) Core(TM) i5-8279U                            | 7.4 s/it      | 3.59 min   |
+| Intel(R) Core(TM) i5-8569U @ 2.8GHz (MBP13-2019)      | 6.17 s/it     | 3.23 min   |
 | Intel(R) Core(TM) i7-1165G7 @ 2.80GHz                 | 7.4 s/it      | 3.59 min   |
 | Intel(R) Core(TM) i7-11800H @ 2.30GHz (16 threads)    | 2.9 s/it      | 1.54 min   |
+| Intel(R) Core(TM) i7-1280P @ 1.80GHz (6P/8E)          | 5.45 s/it     | 2.55 min   |
 | Intel(R) Xeon(R) Gold 6154 CPU @ 3.00GHz              | 1 s/it        | 33 s       |
 
 ## Acknowledgements
