@@ -21,18 +21,28 @@ def run(engine):
 
             with st.expander("Initial image"):
                 init_image = st.file_uploader("init_image", type=['jpg','png','jpeg'])
+
                 stroke_width = st.slider("stroke_width", 1, 100, 50)
+
                 stroke_color = st.color_picker("stroke_color", "#00FF00")
+
                 canvas_result = st_canvas(
                     fill_color="rgb(0, 0, 0)",
                     stroke_width = stroke_width,
                     stroke_color = stroke_color,
                     background_color = "#000000",
                     background_image = Image.open(init_image) if init_image else None,
-                    height = 512,
-                    width = 512,
+                    height = 478,
+                    width = 478,
                     drawing_mode = "freedraw",
                     key = "canvas"
+                )
+
+                strength = st.slider(
+                    label='strength',
+                    min_value = 0.0,
+                    max_value = 1.0,
+                    value = 0.5
                 )
 
             if init_image is not None:
@@ -41,6 +51,10 @@ def run(engine):
             if canvas_result.image_data is not None:
                 mask = cv2.cvtColor(canvas_result.image_data, cv2.COLOR_BGRA2GRAY)
                 mask[mask > 0] = 255
+
+                # ignore empty mask
+                if not mask.any():
+                    mask = None
             else:
                 mask = None
 
@@ -54,13 +68,6 @@ def run(engine):
                 label='guidance_scale',
                 options=range(1, 21),
                 value=7
-            )
-
-            strength = st.slider(
-                label='strength',
-                min_value = 0.0,
-                max_value = 1.0,
-                value = 0.5
             )
 
             seed = st.number_input(
