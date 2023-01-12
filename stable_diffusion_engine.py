@@ -98,6 +98,15 @@ class StableDiffusionEngine:
         latent = (mean + std * np.random.randn(*mean.shape)) * 0.18215
         return latent
 
+    def _render_image(self, latents):
+        image = result(self.vae_decoder.infer_new_request({
+            "latents": np.expand_dims(latents, 0)
+        }))
+        # convert tensor to opencv's image format
+        image = (image / 2 + 0.5).clip(0, 1)
+        image = (image[0].transpose(1, 2, 0)[:, :, ::-1] * 255).astype(np.uint8)
+        return image
+
     def __call__(
             self,
             prompt,
@@ -106,7 +115,8 @@ class StableDiffusionEngine:
             strength = 0.5,
             num_inference_steps = 32,
             guidance_scale = 7.5,
-            eta = 0.0
+            eta = 0.0,
+            update_image = None
     ):
         # extract condition
         tokens = self.tokenizer(
@@ -202,11 +212,9 @@ class StableDiffusionEngine:
                 init_latents_proper = self.scheduler.add_noise(init_latents, noise, t)
                 latents = ((init_latents_proper * mask) + (latents * (1 - mask)))[0]
 
-        image = result(self.vae_decoder.infer_new_request({
-            "latents": np.expand_dims(latents, 0)
-        }))
+            if update_image is not None:
+                image = self._render_image(latents)
+                update_image(image, i)
 
-        # convert tensor to opencv's image format
-        image = (image / 2 + 0.5).clip(0, 1)
-        image = (image[0].transpose(1, 2, 0)[:, :, ::-1] * 255).astype(np.uint8)
+        image = self._render_image(latents)
         return image
