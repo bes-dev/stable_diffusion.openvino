@@ -1,0 +1,30 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag stable-diffusion-openvino:$(date +%s)
+    - name: Save the Docker image
+      run: docker save -o  stable-diffusion-openvino | gzip > stable-diffusion-openvino.tar.gz
+    - name: Archive build artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: docker-image
+        path: |
+          *.tar
+          *.gz
+
+      
+ 
