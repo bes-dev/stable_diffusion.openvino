@@ -90,10 +90,20 @@ python demo.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-i
 streamlit run demo_web.py
 ```
 
+### Example CLI demo
+This simple wrapper allows to avoid initializing the Engine for every command-line prompt.
+For those of us who are so stubborn we want to just use CPU and CLI. ;)
+```bash
+$ python demo_cli.py
+# the CLI has its own way of setting the params,
+# and you can still use the same arguments to initialize the CLI session
+```
+
 ## Performance
 
 | CPU                                                   | Time per iter | Total time |
 |-------------------------------------------------------|---------------|------------|
+| AMD Ryzen 7 4800H                                     | 4.8 s/it      | 2.58 min   |
 | AMD Ryzen Threadripper 1900X                          | 5.34 s/it     | 2.58 min   |
 | Intel(R) Core(TM) i7-4790K  @ 4.00GHz                 | 10.1 s/it     | 5.39 min   |
 | Intel(R) Core(TM) i5-8279U                            | 7.4 s/it      | 3.59 min   |
