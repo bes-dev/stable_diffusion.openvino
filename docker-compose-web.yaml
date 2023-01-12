@@ -1,0 +1,7 @@
+version: '3.9'
+services:
+  stable-diffusion:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    entrypoint: ["streamlit", "run", "demo_web.py"]

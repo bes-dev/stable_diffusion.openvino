@@ -8,7 +8,8 @@ RUN apt-get update && \
 
 COPY requirements.txt /src/
 
-RUN pip3 install pip --upgrade && pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt
+RUN pip3 install streamlit_drawable_canvas
 
 COPY stable_diffusion_engine.py demo.py demo_web.py /src/
 COPY data/ /src/data/
@@ -16,4 +17,4 @@ COPY data/ /src/data/
 # download models
 RUN python3 demo.py --num-inference-steps 1 --prompt "test" --output /tmp/test.jpg
 
-ENTRYPOINT ["python3", "demo.py"]
+ENTRYPOINT ["streamlit", "run", "demo_web.py"]
