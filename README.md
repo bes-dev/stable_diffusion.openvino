@@ -20,7 +20,13 @@ Currently, we work on the new version of our project, so we can respond to your 
 
 ## Install requirements
 
+* Set up and update PIP to the highest version
+* Install OpenVINO™ Development Tools 2022.1 release with PyPI
+* Download requirements
+
 ```bash
+python -m pip install --upgrade pip
+pip install openvino-dev[onnx,pytorch]==2022.1.0
 pip install -r requirements.txt
 ```
 
@@ -28,7 +34,8 @@ pip install -r requirements.txt
 
 ```bash
 usage: demo.py [-h] [--model MODEL] [--seed SEED] [--beta-start BETA_START] [--beta-end BETA_END] [--beta-schedule BETA_SCHEDULE] [--num-inference-steps NUM_INFERENCE_STEPS]
-               [--guidance-scale GUIDANCE_SCALE] [--eta ETA] [--tokenizer TOKENIZER] [--prompt PROMPT] [--init-image INIT_IMAGE] [--strength STRENGTH] [--mask MASK] [--output OUTPUT]
+               [--guidance-scale GUIDANCE_SCALE] [--eta ETA] [--tokenizer TOKENIZER] [--prompt PROMPT] [--params-from PARAMS_FROM] [--init-image INIT_IMAGE] 
+               [--strength STRENGTH] [--mask MASK] [--output OUTPUT]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -47,6 +54,8 @@ optional arguments:
   --tokenizer TOKENIZER
                         tokenizer
   --prompt PROMPT       prompt
+  --params-from PARAMS_FROM
+                        Extract parameters from a previously generated image.
   --init-image INIT_IMAGE
                         path to initial image
   --strength STRENGTH   how strong the initial image should be noised [0.0, 1.0]
@@ -61,6 +70,11 @@ optional arguments:
 python demo.py --prompt "Street-art painting of Emilia Clarke in style of Banksy, photorealism"
 ```
 
+### Repeat a previous image generation with identical seed and parameters but more steps
+```bash
+python demo.py --params-from output.png --output new-output.png --num-inference-steps 64
+```
+
 ### Example Image-To-Image
 ```bash
 python demo.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-image ./data/input.png --strength 0.5
@@ -72,20 +86,69 @@ python demo.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-i
 ```
 
 ### Example web demo
+
+```bash
+pip install streamlit_drawable_canvas
+streamlit run demo_web.py
+```
+
 <p align="center">
   <img src="data/demo_web.png"/>
 </p>
 
 [Example video on YouTube](https://youtu.be/wkbrRr6PPcY)
 
+## Using with Docker
+
+Using Docker, it's not needed to install anything except Docker itself.
+
+### Building containers
+
+* Build docker for command-line version (image name: **sd**)
+* Build docker for web demo version (image name: **sd-web**)
+
 ```bash
-streamlit run demo_web.py
+docker build . -t sd
+docker build . -f Dockerfile-webdemo -t sd-web
+```
+
+### Using CLI-based container
+Example "text-to-image", writing result in current directory:
+```bash
+docker run -v ${PWD}:/tmp sd --prompt "Emilia Clake drinking a coffee" --output /tmp/result.png
+```
+Windows users:
+```
+sd.bat "Emilia Clake drinking a coffee"
+```
+The file `result.png` will be generated in the current directory
+
+### Using web-based container
+Run this:
+
+```bash
+docker run -p 9090:8501 sd-web
+```
+Windows users:
+```
+sd-web.bat
+```
+Then launch this in your browser: http://localhost:9090
+
+### Example CLI demo
+This simple wrapper allows to avoid initializing the Engine for every command-line prompt.
+For those of us who are so stubborn we want to just use CPU and CLI. ;)
+```bash
+$ python demo_cli.py
+# the CLI has its own way of setting the params,
+# and you can still use the same arguments to initialize the CLI session
 ```
 
 ## Performance
 
 | CPU                                                   | Time per iter | Total time |
 |-------------------------------------------------------|---------------|------------|
+| AMD Ryzen 7 4800H                                     | 4.8 s/it      | 2.58 min   |
 | AMD Ryzen Threadripper 1900X                          | 5.34 s/it     | 2.58 min   |
 | Intel(R) Core(TM) i7-4790K  @ 4.00GHz                 | 10.1 s/it     | 5.39 min   |
 | Intel(R) Core(TM) i5-8279U                            | 7.4 s/it      | 3.59 min   |
