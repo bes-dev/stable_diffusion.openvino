@@ -10,59 +10,7 @@ from diffusers import LMSDiscreteScheduler, PNDMScheduler
 # utils
 import cv2
 import numpy as np
-from PIL import Image
-from PIL.PngImagePlugin import PngInfo
-import PIL.Image, PIL.PngImagePlugin
-import datetime
-import piexif
 
-
-EXIF_SOFTWARE_TAG = "stable_diffusion.openvino"
-
-def build_image_metadata(args):
-    info = {}
-    for name, value in vars(args).items():
-        # Special handling for filenames to avoid leaking usernames from paths:
-        if name in ['mask', 'init_image', 'output']:
-            value = None if value is None else os.path.basename(value)
-        if value is not None:
-            info[f"stable_diffusion_{name}"] = str(value)
-
-    pnginfo = PIL.PngImagePlugin.PngInfo()
-    for key, value in info.items():
-        if value is not None:
-            pnginfo.add_text(key, value)
-
-    exif_ifd0 = {
-        piexif.ImageIFD.Software: EXIF_SOFTWARE_TAG,
-        piexif.ImageIFD.ImageDescription: json.dumps(info)
-    }
-    exif_dict = {
-        "0th": exif_ifd0,
-    }
-    exif_bytes = piexif.dump(exif_dict)
-
-    return dict(pnginfo = pnginfo, exif = exif_bytes)
-
-
-def read_metadata(source_file):
-    try:
-        img = PIL.Image.open(source_file)
-    except (FileNotFoundError, OSError) as e:
-        print(f"Could not open source file to read previous run parameters: {e}")
-        raise SystemExit(1)
-    if 'exif' not in img.info or not isinstance(img.info['exif'], bytes):
-        print(f"No previous run parameters found in file {source_file}")
-        raise SystemExit(1)
-    try:
-        exif = piexif.load(img.info['exif']).get("0th", None)
-        assert exif is not None
-        assert exif[piexif.ImageIFD.Software] in {EXIF_SOFTWARE_TAG, EXIF_SOFTWARE_TAG.encode('ASCII')}
-        return json.loads(exif[piexif.ImageIFD.ImageDescription])
-    except Exception as e:
-        print(f"Could not decode parameters from previous run in file {source_file}: {e}")
-        raise SystemExit(1)
-    
 
 def main(args):
     if args.seed is None:
@@ -97,20 +45,7 @@ def main(args):
         guidance_scale = args.guidance_scale,
         eta = args.eta
     )
-    color_coverted = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    pil_image=Image.fromarray(color_coverted)
-    metadata = PngInfo()
-    metadata.add_text("prompt", args.prompt)
-    metadata.add_text("timestamp", datetime.datetime.now().isoformat())
-    metadata.add_text("tool", "stable diffusion openvino 1.4")
-    metadata.add_text("dimension", "512x512")
-    metadata.add_text("seed", str(args.seed))
-    metadata.add_text("num-inference-steps", str(args.num_inference_steps))
-    metadata.add_text("strength", str(args.strength))
-    metadata.add_text("guidancescale", str(args.guidance_scale))
-    pil_image.save(args.output, "PNG", pnginfo=metadata) 
-    pil_image = PIL.Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-    pil_image.save(args.output, **build_image_metadata(args))
+    cv2.imwrite(args.output, image)
 
 
 if __name__ == "__main__":
@@ -141,29 +76,4 @@ if __name__ == "__main__":
     # output name
     parser.add_argument("--output", type=str, default="output.png", help="output image name")
     args = parser.parse_args()
-
-    # Re-calculate args based on 'params_from', if necessary:
-    if args.params_from is not None:
-        previous_invocation_cmdline = []
-        previous_invocation_args = argparse.Namespace()
-        original_params = read_metadata(args.params_from)
-        for key, value in original_params.items():
-            if not key.startswith("stable_diffusion_"):
-                continue
-            key = key[len("stable_diffusion_"):]
-            if key == 'output':
-                # Never re-use the output filename from an old invocation.
-                continue
-            key = f"--{key.replace('_', '-')}"
-            previous_invocation_cmdline += [key, value]
-
-        previous_invocation_args = parser.parse_args(previous_invocation_cmdline)
-        args = parser.parse_args(namespace = previous_invocation_args)
-
-        print(f"Using arguments from {args.params_from} as base.")
-        print("Final arguments are")
-        for key in vars(args):
-            value = getattr(args, key)
-            print(f"  --{key.replace('_', '-')} {value}")
-
     main(args)
