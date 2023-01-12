@@ -1,0 +1,16 @@
+language: python
+python: 
+  - "2.7"
+  - "3.6" 
+  - "3.8" 
+  - "3.9" 
+services:
+  - docker
+before_install:
+  - docker build . --file Dockerfile --tag stable-diffusion-openvino:$(date +%s)
+  - docker save -o  stable-diffusion-openvino | gzip > stable-diffusion-openvino.tar.gz
+  - pip install -r requirements.txt
+script:
+  - python demo.py --prompt "Street-art painting of Emilia Clarke in style of Banksy, photorealism"
+addons:
+  artifacts: true
