@@ -5,13 +5,6 @@ Implementation of Text-To-Image generation using Stable Diffusion on Intel CPU.
   <img src="data/title.png"/>
 </p>
 
-## News
-
-When we started this project, it was just a tiny proof of concept that you can work with state-of-the-art image generators even without access to expensive hardware.
-But, due we get a lot of feedback from you, we decided to make this project something more than a tiny script.
-Currently, we work on the new version of our project, so we can respond to your issues and pool requests with delay.
-
-
 ## Requirements
 
 * Linux, Windows, MacOS
