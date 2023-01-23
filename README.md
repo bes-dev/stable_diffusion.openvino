@@ -20,6 +20,8 @@ Implementation of Text-To-Image generation using Stable Diffusion on Intel CPU.
 ```bash
 python -m pip install --upgrade pip
 pip install openvino-dev[onnx,pytorch]==2022.3.0
+git clone https://github.com/bes-dev/stable_diffusion.openvino.git
+cd stable_diffusion.openvino
 pip install -r requirements.txt
 ```
 
