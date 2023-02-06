@@ -26,13 +26,14 @@ pip install -r requirements.txt
 ## Generate image from text description
 
 ```bash
-usage: demo.py [-h] [--model MODEL] [--seed SEED] [--beta-start BETA_START] [--beta-end BETA_END] [--beta-schedule BETA_SCHEDULE] [--num-inference-steps NUM_INFERENCE_STEPS]
-               [--guidance-scale GUIDANCE_SCALE] [--eta ETA] [--tokenizer TOKENIZER] [--prompt PROMPT] [--params-from PARAMS_FROM] [--init-image INIT_IMAGE]
-               [--strength STRENGTH] [--mask MASK] [--output OUTPUT]
+usage: demo.py [-h] [--model MODEL] [--device DEVICE] [--seed SEED] [--beta-start BETA_START] [--beta-end BETA_END] [--beta-schedule BETA_SCHEDULE]
+               [--num-inference-steps NUM_INFERENCE_STEPS] [--guidance-scale GUIDANCE_SCALE] [--eta ETA] [--tokenizer TOKENIZER] [--prompt PROMPT] [--params-from PARAMS_FROM]
+               [--init-image INIT_IMAGE] [--strength STRENGTH] [--mask MASK] [--output OUTPUT]
 
 optional arguments:
   -h, --help            show this help message and exit
   --model MODEL         model name
+  --device DEVICE       inference device [CPU, GPU]
   --seed SEED           random seed for generating consistent images per prompt
   --beta-start BETA_START
                         LMSDiscreteScheduler::beta_start
@@ -54,7 +55,7 @@ optional arguments:
   --strength STRENGTH   how strong the initial image should be noised [0.0, 1.0]
   --mask MASK           mask of the region to inpaint on the initial image
   --output OUTPUT       output image name
-  ```
+```
 
 ## Examples
 
