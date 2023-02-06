@@ -1,6 +1,6 @@
 # stable_diffusion.openvino
 
-Implementation of Text-To-Image generation using Stable Diffusion on Intel CPU.
+Implementation of Text-To-Image generation using Stable Diffusion on Intel CPU or GPU.
 <p align="center">
   <img src="data/title.png"/>
 </p>
@@ -9,12 +9,12 @@ Implementation of Text-To-Image generation using Stable Diffusion on Intel CPU.
 
 * Linux, Windows, MacOS
 * Python <= 3.9.0
-* CPU compatible with OpenVINO.
+* CPU or GPU compatible with OpenVINO.
 
 ## Install requirements
 
 * Set up and update PIP to the highest version
-* Install OpenVINO™ Development Tools 2022.1 release with PyPI
+* Install OpenVINO™ Development Tools 2022.3.0 release with PyPI
 * Download requirements
 
 ```bash

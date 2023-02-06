@@ -32,18 +32,19 @@ def main(args):
             tensor_format="np"
         )
     engine = StableDiffusionEngine(
-        model = args.model,
-        scheduler = scheduler,
-        tokenizer = args.tokenizer
+        model=args.model,
+        scheduler=scheduler,
+        tokenizer=args.tokenizer,
+        device=args.device
     )
     image = engine(
-        prompt = args.prompt,
-        init_image = None if args.init_image is None else cv2.imread(args.init_image),
-        mask = None if args.mask is None else cv2.imread(args.mask, 0),
-        strength = args.strength,
-        num_inference_steps = args.num_inference_steps,
-        guidance_scale = args.guidance_scale,
-        eta = args.eta
+        prompt=args.prompt,
+        init_image=None if args.init_image is None else cv2.imread(args.init_image),
+        mask=None if args.mask is None else cv2.imread(args.mask, 0),
+        strength=args.strength,
+        num_inference_steps=args.num_inference_steps,
+        guidance_scale=args.guidance_scale,
+        eta=args.eta
     )
     cv2.imwrite(args.output, image)
 
@@ -52,6 +53,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     # pipeline configure
     parser.add_argument("--model", type=str, default="bes-dev/stable-diffusion-v1-4-openvino", help="model name")
+    # inference device
+    parser.add_argument("--device", type=str, default="CPU", help="inference device [CPU, GPU]")
     # randomizer params
     parser.add_argument("--seed", type=int, default=None, help="random seed for generating consistent images per prompt")
     # scheduler params
