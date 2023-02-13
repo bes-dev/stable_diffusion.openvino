@@ -54,7 +54,7 @@ if __name__ == "__main__":
     # pipeline configure
     parser.add_argument("--model", type=str, default="bes-dev/stable-diffusion-v1-4-openvino", help="model name")
     # inference device
-    parser.add_argument("--device", type=str, default="CPU", help="inference device [CPU, GPU]")
+    parser.add_argument("--device", type=str, default="CPU", help="inference device [CPU, GPU.0, GPU.1 ..]")
     # randomizer params
     parser.add_argument("--seed", type=int, default=None, help="random seed for generating consistent images per prompt")
     # scheduler params
