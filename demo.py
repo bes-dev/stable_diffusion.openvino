@@ -10,6 +10,7 @@ from diffusers import LMSDiscreteScheduler, PNDMScheduler
 # utils
 import cv2
 import numpy as np
+from openvino.runtime import Core
 
 
 def main(args):
@@ -54,7 +55,7 @@ if __name__ == "__main__":
     # pipeline configure
     parser.add_argument("--model", type=str, default="bes-dev/stable-diffusion-v1-4-openvino", help="model name")
     # inference device
-    parser.add_argument("--device", type=str, default="CPU", help="inference device [CPU, GPU]")
+    parser.add_argument("--device", type=str, default="CPU", help=f"inference device [{', '.join(Core().available_devices)}]")
     # randomizer params
     parser.add_argument("--seed", type=int, default=None, help="random seed for generating consistent images per prompt")
     # scheduler params
