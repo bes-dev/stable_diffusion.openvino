@@ -8,7 +8,7 @@ Implementation of Text-To-Image generation using Stable Diffusion on Intel CPU o
 ## Requirements
 
 * Linux, Windows, MacOS
-* Python <= 3.9.0
+* Python <= 3.10.0
 * CPU or GPU compatible with OpenVINO.
 
 ## Install requirements
