@@ -88,7 +88,7 @@ python demo.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-i
 | Intel(R) Core(TM) i7-11800H @ 2.30GHz (16 threads) | 2.9 s/it      | 1.54 min   |
 | Intel(R) Core(TM) i7-1280P @ 1.80GHz (6P/8E)       | 5.45 s/it     | 2.55 min   |
 | Intel(R) Xeon(R) Gold 6154 CPU @ 3.00GHz           | 1 s/it        | 33 s       |
-| Intel  HD Graphics 530                             | 13.86 s/it    | 7.23 min   |
+| Intel HD Graphics 530                              | 13.86 s/it    | 7.23 min   |
 | Intel Arc A770M                                    | 6.64 it/s     | 7.53 s     |
 
 
