@@ -27,6 +27,8 @@ class StableDiffusionEngine:
         self.scheduler = scheduler
         # models
         self.core = Core()
+        self.core.set_property({'CACHE_DIR': './cache'})
+
         # text features
         self._text_encoder = self.core.read_model(
             hf_hub_download(repo_id=model, filename="text_encoder.xml"),
