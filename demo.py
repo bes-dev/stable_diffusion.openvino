@@ -1,4 +1,5 @@
 # -- coding: utf-8 --`
+import datetime
 import argparse
 import os
 import json
@@ -78,6 +79,6 @@ if __name__ == "__main__":
     # inpainting
     parser.add_argument("--mask", type=str, default=None, help="mask of the region to inpaint on the initial image")
     # output name
-    parser.add_argument("--output", type=str, default="output.png", help="output image name")
+    parser.add_argument("--output", type=str, default="out_" + datetime.datetime.today().isoformat('_', 'seconds') + ".png", help="output image name")
     args = parser.parse_args()
     main(args)
