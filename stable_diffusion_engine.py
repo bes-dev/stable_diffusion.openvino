@@ -108,7 +108,8 @@ class StableDiffusionEngine:
             strength = 0.5,
             num_inference_steps = 32,
             guidance_scale = 7.5,
-            eta = 0.0
+            eta = 0.0,
+            unprompt = ""
     ):
         # extract condition
         tokens = self.tokenizer(
@@ -124,7 +125,7 @@ class StableDiffusionEngine:
         # do classifier free guidance
         if guidance_scale > 1.0:
             tokens_uncond = self.tokenizer(
-                "",
+                unprompt,
                 padding="max_length",
                 max_length=self.tokenizer.model_max_length,
                 truncation=True
