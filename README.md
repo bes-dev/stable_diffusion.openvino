@@ -13,15 +13,23 @@ Implementation of Text-To-Image generation using Stable Diffusion on Intel CPU o
 
 ## Install requirements
 
-* Set up and update PIP to the highest version
-* Install OpenVINO™ Development Tools 2022.3.0 release with PyPI
-* Download requirements
+Step one: Make sure all third party is avaialble:
+ -`pip` 
+ - `git` 
+ - `python 3.8`
 
-```bash
-python -m pip install --upgrade pip
-pip install openvino-dev[onnx,pytorch]==2022.3.0
-pip install -r requirements.txt
 ```
+apt install pip
+apt install git
+add-apt-repository ppa:deadsnakes/ppa
+apt install python3.8
+```
+Step two: clone this repository:
+`git clone https://github.com/bes-dev/stable_diffusion.openvino.git`
+
+Step three: install dependencies:
+`cd stable_diffusion.openvino`
+`pip install -r requirements.txt`
 
 ## Generate image from text description
 
