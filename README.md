@@ -8,7 +8,7 @@ Implementation of Text-To-Image generation using Stable Diffusion on Intel CPU o
 ## Requirements
 
 * Linux, Windows, MacOS
-* Python <= 3.9.0
+* Python <= 3.10.0
 * CPU or GPU compatible with OpenVINO.
 
 ## Install requirements
@@ -81,12 +81,14 @@ python demo.py --prompt "Photo of Emilia Clarke with a bright red hair" --init-i
 | AMD Ryzen 7 4800H                                  | 4.8 s/it      | 2.58 min   |
 | AMD Ryzen Threadripper 1900X                       | 5.34 s/it     | 2.58 min   |
 | Intel(R) Core(TM) i7-4790K  @ 4.00GHz              | 10.1 s/it     | 5.39 min   |
+| Intel(R) Core(TM) i5-6500T @ 2.50GHz               | 7.52 s/it     | 4.00 min   |
 | Intel(R) Core(TM) i5-8279U                         | 7.4 s/it      | 3.59 min   |
 | Intel(R) Core(TM) i5-8569U @ 2.8GHz (MBP13-2019)   | 6.17 s/it     | 3.23 min   |
 | Intel(R) Core(TM) i7-1165G7 @ 2.80GHz              | 7.4 s/it      | 3.59 min   |
 | Intel(R) Core(TM) i7-11800H @ 2.30GHz (16 threads) | 2.9 s/it      | 1.54 min   |
 | Intel(R) Core(TM) i7-1280P @ 1.80GHz (6P/8E)       | 5.45 s/it     | 2.55 min   |
 | Intel(R) Xeon(R) Gold 6154 CPU @ 3.00GHz           | 1 s/it        | 33 s       |
+| Intel HD Graphics 530                              | 13.86 s/it    | 7.23 min   |
 | Intel Arc A770M                                    | 6.64 it/s     | 7.53 s     |
 
 
