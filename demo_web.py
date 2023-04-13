@@ -120,5 +120,5 @@ if __name__ == "__main__":
         # so we have to do a hard exit.
         os._exit(e.code)
 
-    engine = load_engine(args)
+    engine = load_pipeline(args)
     run(engine)
